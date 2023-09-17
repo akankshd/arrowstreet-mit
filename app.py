@@ -6,7 +6,7 @@ import openai
 app = Flask(__name__, template_folder=".")
 
 # Configure OpenAI API key
-openai.api_key = 'your_api_key_here'
+openai.api_key = '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'
 
 @app.route('/')
 def index():
@@ -29,19 +29,24 @@ def analyze():
             file.save(os.path.join('uploads', filename))
 
             # Parse the CSV using pandas
-            data = pd.read_csv(os.path.join('uploads', filename), encoding='utf-8', errors='replace')
+            data = pd.read_csv(os.path.join('uploads', filename), encoding='iso-8859-1')
 
             # Analyze the data (Replace this with your own analysis)
             analysis_report = f"CSV file '{filename}' has {len(data)} rows and {len(data.columns)} columns."
 
             # Generate a report using ChatGPT
-            response = openai.Completion.create(
-                engine="text-davinci-002",
-                prompt=f"Analyzing CSV file: {analysis_report}",
-                max_tokens=100,
-            )
+            messages = [
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": "Please analyze the CSV data, and give me a good summary of what data you are seeing"},
+                {"role": "assistant", "content": analysis_report}
+            ]
 
-            report = response.choices[0].text
+            response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=messages
+            )
+            
+            report = response.choices[0].message['content']
 
             return report
 
