@@ -36,8 +36,8 @@ def analyze():
 
             # Generate a report using ChatGPT
             messages = [
-                {"role": "system", "content": "You are a helpful assistant."},
-                {"role": "user", "content": "Please analyze the CSV data, and give me a good summary of what data you are seeing"},
+                {"role": "system", "content": "You are a helpful data analytical assistant, that can read trends and come to conclusions"},
+                {"role": "user", "content": "Please give me a good summary of what data you are analying from the CSV file that was sent, go through the rows and columns and logically come up with your own conclusion on what the data is trying to tell you, and relay it, showing signfiicant figures from the data"},
                 {"role": "assistant", "content": analysis_report}
             ]
 
